@@ -16,17 +16,34 @@ class BoardArray : public Board {
         void add(Entry* entry) {
             // TODO: IMPLEMENT THIS FUNCTION
             // ALGORITHM IS PROVIDED IN INSTRUCTIONS.TXT
+
+            //Initializes pos to use in the loop
             int pos = 0;
 
-            for(int i = 0;i < SIZE; i++) {
-                if(array[i].compare(&entry[i * sizeof(Entry)])) {
-                    pos = i;
-                    for(int j = i; j < SIZE - 1; j++) {
-                        array[j+1] = array[j];
-                    }
+            //To catch if the score is lower than the lowest in the Array
+            if(index == SIZE) {
+                if(!(array[index - 1].compare(entry))) {
+                    cout << entry->name << "'s score is too low to be added!";
+                    return;
                 }
-                array[pos] = *entry;
             }
+
+            //Finds the pos to where entry is higher than the current element
+            for(int i = 0; i < index; i++) {
+                if(array[i].compare(entry)) {
+                    pos = i;
+                    break;
+                }
+            }
+            
+            //Shift elements to the right starting from pos
+            for(int j = index; j > pos; j--) {
+                array[j] = array[j - 1];
+            }
+
+            //Insert the score to pos and increment index
+            array[pos] = *entry;
+            index++;
         }
 
         void print() {
